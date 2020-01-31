@@ -170,8 +170,9 @@ bool start_motor(std_srvs::Empty::Request &req,
   {
       ROS_DEBUG("Start motor");
       u_result ans=drv->startMotor();
-  
-      ans=drv->startScan(0,1);
+    
+      // Changed: true = force, false = not default scan
+      ans=drv->startScan(true, false);
    }
    else ROS_INFO("lost connection");
   return true;
@@ -265,11 +266,11 @@ int main(int argc, char * argv[]) {
     ros::ServiceServer stop_motor_service = nh.advertiseService("stop_motor", stop_motor);
     ros::ServiceServer start_motor_service = nh.advertiseService("start_motor", start_motor);
 
-    drv->startMotor();
+    // drv->startMotor();
 
     RplidarScanMode current_scan_mode;
     if (scan_mode.empty()) {
-        op_result = drv->startScan(false /* not force scan */, true /* use typical scan mode */, 0, &current_scan_mode);
+        op_result = drv->startScan(true/* IS force scan */, false/* use typical scan mode */, 0, &current_scan_mode);
     } else {
         std::vector<RplidarScanMode> allSupportedScanModes;
         op_result = drv->getAllSupportedScanModes(allSupportedScanModes);
