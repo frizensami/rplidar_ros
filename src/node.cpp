@@ -196,8 +196,9 @@ int main(int argc, char * argv[]) {
     float max_distance = 8.0;
     int angle_compensate_multiple = 1;//it stand of angle compensate at per 1 degree
     std::string scan_mode;
+    std::string scan_topic;
+
     ros::NodeHandle nh;
-    ros::Publisher scan_pub = nh.advertise<sensor_msgs::LaserScan>("scan", 1000);
     ros::NodeHandle nh_private("~");
     nh_private.param<std::string>("channel_type", channel_type, "serial");
     nh_private.param<std::string>("tcp_ip", tcp_ip, "192.168.0.7"); 
@@ -208,6 +209,10 @@ int main(int argc, char * argv[]) {
     nh_private.param<bool>("inverted", inverted, false);
     nh_private.param<bool>("angle_compensate", angle_compensate, false);
     nh_private.param<std::string>("scan_mode", scan_mode, std::string());
+    nh_private.param<std::string>("scan_topic", scan_topic, "scan");
+
+    // Set up the topic based on argument
+    ros::Publisher scan_pub = nh.advertise<sensor_msgs::LaserScan>(scan_topic, 1000);
 
     ROS_INFO("RPLIDAR running on ROS package rplidar_ros. SDK Version:"RPLIDAR_SDK_VERSION"");
 

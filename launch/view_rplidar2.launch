@@ -6,5 +6,5 @@
 <launch>
   <include file="$(find rplidar_ros)/launch/rplidar2.launch" />
 
-  <node name="rviz2" pkg="rviz" type="rviz" args="-d $(find rplidar_ros)/rviz/rplidar.rviz" />
+  <node name="rviz2" pkg="rviz" type="rviz" args="-d $(find rplidar_ros)/rviz/rplidar2.rviz" />
 </launch>
