@@ -193,6 +193,7 @@ int main(int argc, char * argv[]) {
     int serial_baudrate = 115200;
     std::string frame_id;
     bool inverted = false;
+    bool should_rotate = false;
     bool angle_compensate = true;
     float max_distance = 8.0;
     int angle_compensate_multiple = 1;//it stand of angle compensate at per 1 degree
@@ -208,6 +209,7 @@ int main(int argc, char * argv[]) {
     nh_private.param<int>("serial_baudrate", serial_baudrate, 115200/*256000*/);//ros run for A1 A2, change to 256000 if A3
     nh_private.param<std::string>("frame_id", frame_id, "laser_frame");
     nh_private.param<bool>("inverted", inverted, false);
+    nh_private.param<bool>("should_rotate", should_rotate, true);
     nh_private.param<bool>("angle_compensate", angle_compensate, false);
     nh_private.param<std::string>("scan_mode", scan_mode, std::string());
     nh_private.param<std::string>("scan_topic", scan_topic, "scan");
@@ -266,7 +268,9 @@ int main(int argc, char * argv[]) {
     ros::ServiceServer stop_motor_service = nh.advertiseService("stop_motor", stop_motor);
     ros::ServiceServer start_motor_service = nh.advertiseService("start_motor", start_motor);
 
-    // drv->startMotor();
+    if (should_rotate) {
+        drv->startMotor();
+    }
 
     RplidarScanMode current_scan_mode;
     if (scan_mode.empty()) {
